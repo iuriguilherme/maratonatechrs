@@ -36,6 +36,33 @@ Desenvolvimento
 
 Python; Quart; Leaflet; Open Street Maps
 
+### Instruções
+
+#### Windows Power Shell
+
+```batch
+$ python -m venv venv
+$ .\venv\Scripts\activate
+(venv) $ pip install -r requirements.txt
+```
+
+#### UNIX Bash
+
+```bash
+$ python -m venv venv
+$ source venv/bin/activate
+(venv) $ pip install -r requirements.txt
+```
+
+#### Pipenv
+
+```bash
+$ python -m pipenv install
+```
+
+```bash
+$ pipenv run dev
+```
 
 ### Lista de links usados na pesquisa
 
