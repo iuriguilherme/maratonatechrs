@@ -24,11 +24,17 @@
 />
 </head>
 <body>
+<!--
 <h1>{{ title }}</h1>
 <h2>{{ name }} v{{ version }}</h2>
-<div id="map"></div>
+-->
+<div id="mapa" class="mapa"></div>
 </body>
 <footer>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='geojson/teste.geojson') }}"
+></script>
 <script
   src="{{ url_for('static', filename='js/mapa.js') }}"
 /></script>

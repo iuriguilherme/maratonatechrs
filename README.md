@@ -28,7 +28,6 @@ Coisas necessárias:
 Organizar estes pontos na ferramenta apropriada: 
 https://github.com/iuriguilherme/maratonatechrs/discussions  
 
-
 Desenvolvimento
 ---
 
@@ -77,6 +76,8 @@ $ pipenv run dev
 * https://sos-rs.com/
 * https://sites.research.google/floods/
 * https://sealevel.nasa.gov/data_tools/15
+* https://zenodo.org/records/11243161
+* https://dadosabertos.poa.br/
 
 #### Visualização de dados
 
@@ -93,6 +94,10 @@ $ pipenv run dev
 * https://www.vincent.callebaut.org/
 * https://sealevel.nasa.gov/news/206/new-high-tide-flooding-projection-tool-aids-us-coastal-decision-making
 
+#### Ferramentas
+
+* https://www.cepaberto.com/
+* https://www.geografos.com.br/cidades-rio-grande-do-sul/porto-alegre.php
 
 #### Tecnológico
 
@@ -100,6 +105,8 @@ $ pipenv run dev
 * https://leafletjs.com/
 * https://quart.palletsprojects.com/en/stable/index.html
 * https://notabug.org/velivery/velivery_maps
+* https://docs.python-guide.org/writing/structure/
+* https://github.com/totalvoice/totalvoice-python
 
 Licença
 ---

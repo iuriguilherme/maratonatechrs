@@ -23,6 +23,7 @@ app: object = Quart(__name__)
 @app.route("/")
 async def index() -> str:
   try:
+    ## Porto Alegre lat -30.0417169, lng -51.2211564
     markers = [
       {
         'lat': -30.0159,
