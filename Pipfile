@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+quart = {extras = ["dotenv"]}
+uvicorn = "*"
+
+[dev-packages]
+maratonatechrs = {editable = true, path = "."}
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.9"
+
+[scripts]
+## DESENVOLVIMENTO
+dev = "uvicorn src.maratonatechrs.web:app --reload"
+## TESTE
+api = "hypercorn maratonatechrs.api:app --worker-class ${HYPERCORN_WORKER_CLASS} --bind ${HYPERCORN_BIND} --reload"
+web = "hypercorn maratonatechrs.web:app --worker-class ${HYPERCORN_WORKER_CLASS} --bind ${HYPERCORN_BIND} --reload"
+## HOMOLOGAÇÃO
+prod = "python -m maratonatechrs"
