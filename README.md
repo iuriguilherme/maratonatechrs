@@ -14,23 +14,41 @@ alagamentos, deslizamentos, crise energética, abastecimento de água,
 estradas bloqueadas, etc. e subsidiar com informações potenciais 
 evacuações planejadas.  
 
-Tecnologia
+Escopo e planejamento
 ---
+
+Coisas necessárias:
+
+* Formar uma equipe
+* Garimpar dados
+* Decidir como manipular os dados
+* Visualizar dados em um mapa
+  * Criar visualização que permita escolher a data dos dados
+
+Organizar estes pontos na ferramenta apropriada: 
+https://github.com/iuriguilherme/maratonatechrs/discussions  
+
+
+Desenvolvimento
+---
+
+### Tecnologia
 
 Python; Quart; Leaflet; Open Street Maps
 
-Lista de links usados na pesquisa
----
 
-### Técnico
+### Lista de links usados na pesquisa
+
+#### Técnico
 
 * https://github.com/TechPeloRS/maratona-pelo-rs
 * https://storymaps.arcgis.com/stories/02d01e5f3a2b423893a2b2560fa8ecce
 * https://sos-rs.com/
 * https://storymaps.arcgis.com/stories/a81d69f4bccf42989609e3fe64d8ef48
 * https://disasterscharter.org/web/guest/activations/-/article/flood-in-brazil-activation-875-
+* https://sites.research.google/floods/
 
-### Tecnológico
+#### Tecnológico
 
 * https://medium.com/geekculture/how-to-make-a-web-map-with-pythons-flask-and-leaflet-9318c73c67c3
 * https://leafletjs.com/
