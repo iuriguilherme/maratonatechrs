@@ -14,7 +14,7 @@ EXCLUDES=( \
 'venv' \
 )
 
-PATH='usr/lib/maratonatechrs/'
+DIR='usr/lib/maratonatechrs/'
 
 rsync -avvhSP \
 --delete \
@@ -22,4 +22,4 @@ $(for EXCLUDE in ${EXCLUDES[@]}; \
 do echo -n "--exclude=${EXCLUDE} "; \
 done) \
 ./ \
-${SERVER}:${PATH}
+${SERVER}:${DIR}
