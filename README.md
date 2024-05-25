@@ -39,20 +39,40 @@ Python; Quart; Leaflet; Open Street Maps
 
 ### Lista de links usados na pesquisa
 
-#### Técnico
+#### Geral
 
 * https://github.com/TechPeloRS/maratona-pelo-rs
-* https://storymaps.arcgis.com/stories/02d01e5f3a2b423893a2b2560fa8ecce
+* https://www.climate.gov/maps-data/dataset/sea-level-rise-map-viewer
+
+#### Fontes de dados
+
+* https://prefeitura.poa.br/smpae/observapoa
 * https://sos-rs.com/
+* https://sites.research.google/floods/
+* https://sealevel.nasa.gov/data_tools/15
+
+#### Visualização de dados
+
+* https://storymaps.arcgis.com/stories/02d01e5f3a2b423893a2b2560fa8ecce
 * https://storymaps.arcgis.com/stories/a81d69f4bccf42989609e3fe64d8ef48
 * https://disasterscharter.org/web/guest/activations/-/article/flood-in-brazil-activation-875-
-* https://sites.research.google/floods/
+* https://sealevel.nasa.gov/
+* https://coast.noaa.gov/slr/
+* https://sealevel.nasa.gov/task-force-scenario-tool
+
+#### Planejamento urbano
+
+* https://www.jiveinvestments.com/
+* https://www.vincent.callebaut.org/
+* https://sealevel.nasa.gov/news/206/new-high-tide-flooding-projection-tool-aids-us-coastal-decision-making
+
 
 #### Tecnológico
 
 * https://medium.com/geekculture/how-to-make-a-web-map-with-pythons-flask-and-leaflet-9318c73c67c3
 * https://leafletjs.com/
 * https://quart.palletsprojects.com/en/stable/index.html
+* https://notabug.org/velivery/velivery_maps
 
 Licença
 ---
