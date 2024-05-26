@@ -35,34 +35,25 @@ Desenvolvimento
 
 Python; Quart; FastAPI; WTForms; Leaflet; Open Street Maps
 
-Homologação em https://mtrs.iuri.xyz/
+Mapa em https://mtrs.iuri.xyz/  
+API em https://mtrs1.iuri.xyz/  
 
 ### Instruções
 
-#### Windows Power Shell
-
-```batch
-$ python -m venv venv
-$ .\venv\Scripts\activate
-(venv) $ pip install -r requirements.txt
-```
-
-#### UNIX Bash
-
 ```bash
 $ python -m venv venv
-$ source venv/bin/activate
+$ source venv/bin/activate ## No Windows Power Shell é .\venv\Scripts\activate
 (venv) $ pip install -r requirements.txt
+(venv) $ uvicorn maratonatechrs:web
+(venv) $ uvicorn maratonatechrs:api
 ```
 
-#### Pipenv
+Alternativamente com pipenv:
 
 ```bash
 $ python -m pipenv install
-```
-
-```bash
-$ pipenv run dev
+$ pipenv run web
+$ pipenv run api
 ```
 
 ### Lista de links usados na pesquisa
