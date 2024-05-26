@@ -1,13 +1,13 @@
 <h1>{{ title }}</h1>
 <form action="" method="post">
 {% for field in form|selectattr('render') %}
-  <div class="mb-3">
-  {{ field.label }}
-  {{ field }}
-  {% for error in field.errors %}
-    <span class="badge badge-danger">[{{ error }}]</span>
-  {% endfor %}
-  </div>
+    <div class="mb-3">
+    {{ field.label }}
+    {{ field }}
+    {% for error in field.errors %}
+        <span class="badge badge-danger">[{{ error }}]</span>
+    {% endfor %}
+    </div>
 {% endfor %}
 {{ form.submit_field(class="btn btn-primary") }}
 </form>

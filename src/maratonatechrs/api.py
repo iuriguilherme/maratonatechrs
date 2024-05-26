@@ -11,53 +11,61 @@ app: FastAPI = FastAPI()
 
 @app.get("/")
 async def index() -> dict:
-  logger.info("hello fastapi")
-  return {"message": "Deu Certo FastAPI"}
+    """index"""
+    return {
+        "status": "OK",
+        "message": """Lista de endpoints:
+POST /localizacao/?<float:latitude>&<float:longitude>
+GET /localizacoes
+PUT /localizacoes/<int:id>
+DELETE /localizacoes/<int:id>
+"""
+        }
 
 ## https://github.com/TechPeloRS/maratona-pelo-rs/blob/main/docs/localizacao.md
 @app.get("/localizacoes")
 async def localizacoes() -> dict:
-  """GET /localizacoes"""
-  return {
-    "localizacoes": [
-      {
-        "id": 1,
-        "latitude": -30.0346,
-        "longitude": -51.2177
-      },
-      {
-        "id": 2,
-        "latitude": -29.9128,
-        "longitude": -51.1855
-      }
-    ]
-  }
+    """GET /localizacoes"""
+    return {
+        "localizacoes": [
+            {
+                "id": 1,
+                "latitude": -30.0346,
+                "longitude": -51.2177
+            },
+            {
+                "id": 2,
+                "latitude": -29.9128,
+                "longitude": -51.1855
+            }
+        ]
+    }
 
 @app.post("/localizacao")
 async def localizacao(latitude: float, longitude: float) -> dict:
-  """POST /localizacao"""
-  return {
-    "id": 3,
-    "latitude": -30.1234,
-    "longitude": -51.1234
-  }
+    """POST /localizacao"""
+    return {
+        "id": 3,
+        "latitude": -30.1234,
+        "longitude": -51.1234
+    }
 
 @app.put("/localizacoes/<int:id>")
 async def localizacoes(
-  id: int,
-  latitude: float,
-  longitude: float
+    id: int,
+    latitude: float,
+    longitude: float
 ) -> dict:
-  """PUT /localizacoes"""
-  return {
-    "id": 3,
-    "latitude": -30.1234,
-    "longitude": -51.1234
-  }
+    """PUT /localizacoes"""
+    return {
+        "id": 3,
+        "latitude": -30.1234,
+        "longitude": -51.1234
+    }
 
 @app.delete("/localizacoes/<int:id>")
 async def localizacoes(id: int) -> dict:
-  """DELETE /localizacoes"""
-  return {
-    "message": "Localização excluída com sucesso"
-  }
+    """DELETE /localizacoes"""
+    return {
+        "message": "Localização excluída com sucesso"
+    }
