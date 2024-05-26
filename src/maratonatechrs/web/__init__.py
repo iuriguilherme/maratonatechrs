@@ -2,16 +2,21 @@
 
 from jinja2 import TemplateNotFound
 import logging
+import os
 from quart import (
   Quart,
   render_template,
+  request,
 )
+from quart_wtf.csrf import CSRFProtect
+import secrets
 
-from . import (
+from .. import (
   __description__ as description,
   __name__ as name,
   __version__ as version,
 )
+from .forms import MarkerForm
 
 log_level: str = logging.INFO
 logging.basicConfig(level = log_level)
@@ -19,23 +24,60 @@ logging.basicConfig(level = log_level)
 logger: logging.Logger = logging.getLogger(__name__)
 
 app: object = Quart(__name__)
+app.secret_key: str = os.getenv('QUART_SECRET',
+  default = secrets.token_urlsafe(32))
+
+## Porto Alegre LatLng(-30.028344, -51.228529)
+markers: list[dict[str, str | float]] = [
+  {
+    'lat': -30.028344,
+    'lon': -51.228529,
+    'popup': 'Porto Alegre',
+  }
+]
 
 @app.route("/")
 async def index() -> str:
   try:
-    ## Porto Alegre lat -30.0417169, lng -51.2211564
-    markers = [
-      {
-        'lat': -30.0159,
-        'lon': -51.1348,
-        'popup': 'Porto Alegre',
-      }
-    ]
     return await render_template(
       "index.html",
       title = f"Protótipo: {description}",
       markers = markers,
       version = version,
+    )
+  except Exception as e:
+    logger.exception(e)
+    return await render_template(
+      "error.html",
+      error = repr(e),
+      title = "Erro",
+    )
+
+@app.route("/marcador", methods = ['GET', 'POST'])
+async def marcador() -> str:
+  """Cadastrar novo marcador"""
+  try:
+    cadastrado: bool = False
+    logger.info(f"request.form: {await request.form}")
+    logger.info(f"form fields: {[f for f in (await request.form)]}")
+    logger.info("form-zero" in (await request.form))
+    form: MarkerForm = MarkerForm(formdata = await request.form)
+    if request.method == "POST":
+      logger.info(f"Formulário: {form} ({type(form)})")
+      try:
+        markers.append({
+          'lat': form["latitude_field"].data,
+          'lon': form["longitude_field"].data,
+          'popup': form["description_field"].data
+        })
+        cadastrado = True
+      except:
+        raise
+    return await render_template(
+      "marcador.html",
+      form = form,
+      title = "Cadastrar marcador",
+      cadastrado = cadastrado,
     )
   except Exception as e:
     logger.exception(e)

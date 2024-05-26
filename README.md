@@ -78,6 +78,7 @@ $ pipenv run dev
 * https://sealevel.nasa.gov/data_tools/15
 * https://zenodo.org/records/11243161
 * https://dadosabertos.poa.br/
+* https://public.emdat.be/
 
 #### Visualização de dados
 
@@ -98,6 +99,7 @@ $ pipenv run dev
 
 * https://www.cepaberto.com/
 * https://www.geografos.com.br/cidades-rio-grande-do-sul/porto-alegre.php
+* https://docs.google.com/forms/d/e/1FAIpQLSeM2Ylw4AMOQV2FAeEK3xORgO0A_qcQoWufqaZ5x-eGMoByQA/viewform
 
 #### Tecnológico
 

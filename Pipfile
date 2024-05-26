@@ -4,8 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+fastapi = {extras = ["all"] }
+openpyxl = "*"
+pandas = "*"
 quart = {extras = ["dotenv"]}
-uvicorn = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+quart-wtforms = "*"
 
 [dev-packages]
 maratonatechrs = {editable = true, path = "."}
@@ -18,7 +22,7 @@ python_full_version = "3.11.9"
 ## DESENVOLVIMENTO
 dev = "uvicorn src.maratonatechrs.web:app --reload"
 ## TESTE
-api = "hypercorn maratonatechrs.api:app --worker-class ${HYPERCORN_WORKER_CLASS} --bind ${HYPERCORN_BIND} --reload"
-web = "hypercorn maratonatechrs.web:app --worker-class ${HYPERCORN_WORKER_CLASS} --bind ${HYPERCORN_BIND} --reload"
+api = "uvicorn maratonatechrs.api:app"
+web = "uvicorn maratonatechrs.web:app"
 ## HOMOLOGAÇÃO
 prod = "python -m maratonatechrs"
