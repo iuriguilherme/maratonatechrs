@@ -33,7 +33,9 @@ Desenvolvimento
 
 ### Tecnologia
 
-Python; Quart; Leaflet; Open Street Maps
+Python; Quart; FastAPI; WTForms; Leaflet; Open Street Maps
+
+Homologação em https://mtrs.iuri.xyz/
 
 ### Instruções
 
