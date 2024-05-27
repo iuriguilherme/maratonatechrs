@@ -1,4 +1,9 @@
 <h1>{{ title }}</h1>
+<p>Use este formul&aacute;rio para cadastrar um marcador de utilidade
+p&uacute;blica como por exemplo mas n&atilde;o limitado a abrigos,
+equipamentos p&uacute;blicos, locais de import&acirc;ncia 
+clim&aacute;tica. Ao enviar dados, voc&ecirc;e concorda com os 
+<a href="#">termos</a>.</p>
 <form action="" method="post">
 {{ form.csrf_token }}
 {% for field in form|selectattr('render') %}
@@ -16,4 +21,6 @@
 <hr>
 <p>Marcador cadastrado com sucesso. 
 <a href="{{ url_for('index') }}">Ver no mapa</a></p>
+{% else %}
+<a href="{{ url_for('index') }}">Voltar ao mapa</a>
 {% endif %}

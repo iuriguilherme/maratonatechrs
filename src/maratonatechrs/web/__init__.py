@@ -159,6 +159,7 @@ async def poligono() -> str:
     """Cadastrar novo polígono"""
     try:
         cadastrado: bool = False
+        problemas: list = []
         form: PolygonForm = await PolygonForm().create_form()
         if await form.validate_on_submit():
             try:
@@ -171,21 +172,71 @@ async def poligono() -> str:
                 pathlib.Path(os.path.dirname(caminho)).mkdir(
                     parents = True, exist_ok = True)
                 await arquivo.save(caminho)
-                # ~ kml: object | None = None
-                # ~ e: str = 'UTF-8'
+                kml: object | None = None
+                e: str = 'UTF-8'
                 # ~ with open(caminho, 'rb') as a:
                     # ~ s = 'encoding'
                     # ~ h = a.readline()
                     # ~ e = h[h.find(s)+len(s):].split('"')[1]
                 # ~ with open(caminho, 'rb', e) as a:
-                    # ~ kml = parser.parse(a)
-                # ~ description: str = kml.getroot().Document.name.text
-                logger.info(description)
-                import geopandas, fiona
-                fiona.drvsupport.supported_drivers['LIBKML'] = 'rw'
-                k = geopandas.read_file(caminho)
-                folium.Choropleth(k.geometry).add_to(mapa)
+                with open(caminho, 'rb') as a:
+                    kml = parser.parse(a)
+                description: str = kml.getroot().Document.name.text
+                for folder in kml.getroot().Document.Folder:
+                    _description = description + f" {folder.name.text}"
+                    for _i1, placemark in enumerate(
+                        folder.Placemark
+                    ):
+                        try:
+                            _color, _fillcolor, _fill = [
+                                (
+                                    s.LineStyle.color.text,
+                                    s.PolyStyle.color.text,
+                                    bool(s.PolyStyle.fill.text),
+                                ) for s in \
+                                kml.getroot().Document.Style \
+                                if s.attrib.get('id') == f"""\
+{placemark.styleUrl.text.strip('#')}-normal""" \
+                            ][0]
+                            # ~ logger.info(f"{list(placemark.iter())}")
+                            for _i2, _polygon in enumerate(
+                                placemark.MultiGeometry
+                            ):
+                                try:
+                                    _locations: list = [
+                                        [__c[1], __c[0]] \
+                                        for __c \
+                                        in [_c.strip().split(',') \
+                                        for _c in \
+                                        _polygon.outerBoundaryIs.\
+                                        LinearRing.coordinates.text.\
+                                        split('\n')[1:-1]]
+                                    ]
+                                    polygons.append({
+                                        'popup': _description,
+                                        'color': _color,
+                                        'fillcolor': _fillcolor,
+                                        'fill': _fill,
+                                        'locations': _locations,
+                                    })
+                                except AttributeError:
+                                    # ~ logger.exception(e)
+                                    problemas.append(f"""\
+Polígono {_description}.{_i2} malformado ou formato não suportado""")
+                        except AttributeError:
+                            # ~ logger.exception(e)
+                            problemas.append(f"""\
+Placemarker {_description}.{_i1} malformado ou formato não suportado""")
+                logger.info(polygons)
                 cadastrado = True
+                if len(problemas) < 1:
+                    problemas = None
+                # ~ logger.info(description)
+                # ~ import geopandas, fiona
+                # ~ fiona.drvsupport.supported_drivers['LIBKML'] = 'rw'
+                # ~ k = geopandas.read_file(caminho)
+                # ~ folium.Choropleth(k.geometry).add_to(mapa)
+                # ~ cadastrado = True
                 # ~ for 
                 # ~ color: str = kml.getroot().Document.Folder
                 ## Troféu de ouro código feio do ano
@@ -240,6 +291,7 @@ async def poligono() -> str:
             form = form,
             title = "Cadastrar polígono",
             cadastrado = cadastrado,
+            problemas = problemas,
         )
     except Exception as e:
         logger.exception(e)

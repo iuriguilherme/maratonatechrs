@@ -1,3 +1,22 @@
+<pre>
+
+                       ______
+                    .-"      "-.
+                   /            \
+       _          |              |          _
+      ( \         |,  .-.  .-.  ,|         / )
+       > "=._     | )(__/  \__)( |     _.=" <
+      (_/"=._"=._ |/     /\     \| _.="_.="\_)
+             "=._ (_     ^^     _)"_.="
+                 "=\__|IIIIII|__/="
+                _.="| \IIIIII/ |"=._
+      _     _.="_.="\          /"=._"=._     _
+     ( \_.="_.="     `--------`     "=._"=._/ )
+      > _.="                            "=._ <
+     (_/   jgs                              \_)
+</pre>
+<p>&Aacute;rea reservada para desenvolvedora(e)s. N&atilde;o aperte 
+nenhum bot&atilde;o sem saber o que est&aacute; fazendo&excl;</p>
 <h1>{{ title }}</h1>
 <p>Para obter os &uacute;ltimos dados atualizados em <i>cache</i> da
 API de enchentes da Inglaterra, aperte este bot&atilde;o:
@@ -31,3 +50,7 @@ bot&atilde;o:
 Atualizado&excl; <a href="{{ url_for('index') }}">Ver no mapa</a>
 {% endif %}
 </p>
+<hr>
+{% if not atualizado1 or not atualizado2 or not atualizado3 %}
+<a href="{{ url_for('index') }}">Voltar ao mapa</a>
+{% endif %}

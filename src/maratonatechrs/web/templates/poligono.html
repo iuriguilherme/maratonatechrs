@@ -1,4 +1,8 @@
 <h1>{{ title }}</h1>
+<p>Use este formul&aacute;rio para cadastrar um novo pol&iacute;gono
+com dados relevantes de enchentes ou deslizamentos. Use arquivos KML, 
+arquivos KMZ n&atilde;o s&atilde;o mais suportados. Ao enviar dados, 
+voc&ecirc;e concorda com os <a href="#">termos</a>.</p>
 <form action="" method="POST" enctype="multipart/form-data">
 {{ form.csrf_token }}
 {% for field in form|selectattr('render') %}
@@ -14,6 +18,19 @@
 </form>
 {% if cadastrado %}
 <hr>
-<p>Pol&iacute;gono cadastrado com sucesso. 
+{% if problemas %}
+<p>Os seguintes problemas foram encontrados no decorrer do 
+carregamento deste arquivo:</p>
+<ul>
+{% for problema in problemas %}
+    <li>{{ problema }}</li>
+{% endfor %}
+</ul>
+<p>Talvez nem todos dados do mapa tenham sido carregados.</p>
+{% endif %}
+<p>Pol&iacute;gono cadastrado com 
+{% if problemas %}erros{% else %}sucesso{% endif %}.
 <a href="{{ url_for('index') }}">Ver no mapa</a></p>
+{% else %}
+<a href="{{ url_for('index') }}">Voltar ao mapa</a>
 {% endif %}
