@@ -16,7 +16,7 @@ const tile_attribution = 'Dados de mapas &copy; contribuidora(e)s do <a href="ht
     ''
 ;
 
-let map = L.map(mapa).setView([porto_alegre_lat, porto_alegre_lng], 13);
+var map = L.map(mapa).setView([porto_alegre_lat, porto_alegre_lng], 13);
 //~ let map = L.map(mapa).setView([londres_lat, londres_lng], 13);
 
 let osm = L.tileLayer(tile_url, {

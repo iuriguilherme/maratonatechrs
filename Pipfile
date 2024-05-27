@@ -12,6 +12,8 @@ uvicorn = {extras = ["standard"], version = "*"}
 quart-wtforms = "*"
 pykml = "*"
 aiohttp = {extras = ["speedups"], version = "*"}
+geopandas = "*"
+folium = "*"
 
 [dev-packages]
 maratonatechrs = {editable = true, path = "."}

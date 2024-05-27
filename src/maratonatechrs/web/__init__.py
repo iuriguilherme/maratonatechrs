@@ -5,6 +5,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 try:
     import aiohttp
+    import folium
     from jinja2 import TemplateNotFound
     import json
     import os
@@ -42,16 +43,22 @@ app.secret_key: str = os.getenv(
 csrf: object = CSRFProtect(app)
 
 ## Porto Alegre LatLng(-30.028344, -51.228529)
-markers: list[dict[str, str | float]] = [
+porto_alegre_lat = -30.0417169
+porto_alegre_lng = -51.2211564
+mapa: object = folium.Map(location = [porto_alegre_lat, porto_alegre_lng], zoom_start = 13)
+marcadores: object = folium.FeatureGroup("marcadores").add_to(mapa)
+areas: object = folium.FeatureGroup("areas").add_to(mapa)
+folium.LayerControl().add_to(mapa)
+
+markers: list = [
     {
-        'lat': -30.028344,
-        'lon': -51.228529,
+        'location': [-30.028344, -51.228529],
         'popup': 'Porto Alegre',
     }
 ]
-polygons: list[dict] = [
+polygons: list = [
     {
-        'latlongs': [
+        'locations': [
             [-30.033273, -51.240696],
             [-30.030775, -51.238883],
             [-30.019627, -51.216674],
@@ -67,8 +74,8 @@ polygons: list[dict] = [
             [-30.041388, -51.241157],
             [-30.041388, -51.241157]
         ],
-        'color': 'orange',
-        'description': "Polígono de teste",
+        'fillcolor': 'orange',
+        'popup': "Vai alagar",
     }
 ]
 mapa_cores: dict = {
@@ -81,12 +88,29 @@ mapa_cores: dict = {
 @app.route("/")
 async def index() -> str:
     try:
+        for m in markers:
+            try:
+                folium.Marker(**m).add_to(marcadores)
+            except ValueError as e:
+                # ~ logger.exception(e)
+                logger.info(f"marcador ruim: {m.get('popup')}")
+        for p in polygons:
+            try:
+                folium.Polygon(**p, color = p.get('fillcolor'), fill = True).add_to(areas)
+            except ValueError as e:
+                # ~ logger.exception(e)
+                logger.info(f"polígono ruim: {p.get('popup')}")
+        mapa.get_root().render()
         return await render_template(
             "index.html",
             title = f"Protótipo: {description}",
-            markers = markers,
-            polygons = polygons,
+            # ~ markers = markers,
+            # ~ polygons = polygons,
             version = version,
+            name = name,
+            header = mapa.get_root().header.render(),
+            body_html = mapa.get_root().html.render(),
+            script = mapa.get_root().script.render(),
         )
     except Exception as e:
         logger.exception(e)
@@ -147,25 +171,70 @@ async def poligono() -> str:
                 pathlib.Path(os.path.dirname(caminho)).mkdir(
                     parents = True, exist_ok = True)
                 await arquivo.save(caminho)
-                kml: object | None = None
-                with open(caminho) as a:
-                    kml = parser.parse(a)
-                ## Troféu de ouro código feio do ano
-                coordenadas: list = [
-                    [float(j[1]), float(j[0])] for j in \
-                    [i.strip().split(',') for i in \
-                    kml.getroot().Document.Placemark.Polygon.
-                    outerBoundaryIs.LinearRing.coordinates.text.
-                    split('\n')[1:-1]]
-                ]
-                polygons.append({
-                    'latlongs': coordenadas,
-                    'color': 'green',
-                    'description': "DEU CERTO",
-                })
+                # ~ kml: object | None = None
+                # ~ e: str = 'UTF-8'
+                # ~ with open(caminho, 'rb') as a:
+                    # ~ s = 'encoding'
+                    # ~ h = a.readline()
+                    # ~ e = h[h.find(s)+len(s):].split('"')[1]
+                # ~ with open(caminho, 'rb', e) as a:
+                    # ~ kml = parser.parse(a)
+                # ~ description: str = kml.getroot().Document.name.text
+                logger.info(description)
+                import geopandas, fiona
+                fiona.drvsupport.supported_drivers['LIBKML'] = 'rw'
+                k = geopandas.read_file(caminho)
+                folium.Choropleth(k.geometry).add_to(mapa)
                 cadastrado = True
+                # ~ for 
+                # ~ color: str = kml.getroot().Document.Folder
+                ## Troféu de ouro código feio do ano
+                # ~ coordenadas: list = [
+                    # ~ [float(j[1]), float(j[0])] for j in \
+                    # ~ [i.strip().split(',') for i in \
+                    # ~ kml.getroot().Document.Placemark.Polygon.
+                    # ~ outerBoundaryIs.LinearRing.coordinates.text.
+                    # ~ split('\n')[1:-1]]
+                # ~ ]
+                # ~ try:
+                    # ~ for enchente in os.listdir(caminho_enchentes):
+                        # ~ if os.path.isdir(os.path.join(caminho_enchentes,
+                            # ~ enchente)
+                        # ~ ):
+                            # ~ dados: dict = {}
+                            # ~ with open(os.path.join(caminho_enchentes,
+                                # ~ enchente, 'metadata.json'), 'r+'
+                            # ~ ) as f:
+                                # ~ dados = json.load(f)
+                            # ~ with open(os.path.join(caminho_enchentes,
+                                # ~ enchente, 'polygon.json'), 'r+'
+                            # ~ ) as f:
+                                # ~ _poligonos = json.load(f)
+                                # ~ description: str = _poligonos['features']\
+                                    # ~ [0]['properties']['DESCRIP']
+                                # ~ for _c1 in _poligonos['features'][0]\
+                                    # ~ ['geometry']['coordinates']\
+                                # ~ :
+                                    # ~ for _c2 in _c1:
+                                        # ~ latlongs: list = []
+                                        # ~ for _c3 in _c2:
+                                            # ~ if isinstance(_c3, list):
+                                                # ~ latlongs.append([_c3[1],
+                                                    # ~ _c3[0]])
+                                            # ~ else:
+                                                # ~ logger.info(f"""{enchente} \
+    # ~ inconsistente""")
+                                        # ~ polygons.append({
+                                            # ~ 'color': dados['color'],
+                                            # ~ 'description': description,
+                                            # ~ 'latlongs': latlongs,
+                                        # ~ })
+                                        # ~ cadastrado = True
+                # ~ except:
+                    # ~ raise
             except Exception as e:
                 logger.exception(e)
+                raise
         return await render_template(
             "poligono.html",
             form = form,
@@ -224,7 +293,8 @@ d-monitoring/id/floods"""
                         caminho_enchentes,
                         item['floodAreaID'],
                     )
-                    if not os.path.isfile(os.path.join(enchente,
+                    ## PRA QUEEE
+                    if True or not os.path.isfile(os.path.join(enchente,
                         'polygon.json')
                     ):
                         pathlib.Path(enchente).mkdir(
@@ -233,9 +303,9 @@ d-monitoring/id/floods"""
                             'metadata.json'), 'w+'
                         ) as f:
                             json.dump({
-                                'description': item.get('message',
+                                'popup': item.get('message',
                                     item.get('description')),
-                                'color': mapa_cores[
+                                'fillcolor': mapa_cores[
                                     item['severityLevel']],
                             }, f)
                         async with aiohttp.ClientSession() as s:
@@ -265,24 +335,26 @@ d-monitoring/id/floods"""
                             enchente, 'polygon.json'), 'r+'
                         ) as f:
                             _poligonos = json.load(f)
-                            description: str = _poligonos['features']\
-                                [0]['properties']['DESCRIP']
+                            _description: str = _poligonos['features']\
+                                [0]['properties'].get('DESCRIP',
+                                dados.get('popup',
+                                dados.get('description')))
                             for _c1 in _poligonos['features'][0]\
                                 ['geometry']['coordinates']\
                             :
                                 for _c2 in _c1:
-                                    latlongs: list = []
+                                    _locations: list = []
                                     for _c3 in _c2:
                                         if isinstance(_c3, list):
-                                            latlongs.append([_c3[1],
+                                            _locations.append([_c3[1],
                                                 _c3[0]])
                                         else:
                                             logger.info(f"""{enchente} \
 inconsistente""")
                                     polygons.append({
-                                        'color': dados['color'],
-                                        'description': description,
-                                        'latlongs': latlongs,
+                                        'fillcolor': dados.get('fillcolor', 'color'),
+                                        'popup': _description,
+                                        'locations': _locations,
                                     })
                 atualizado3 = True
             except:

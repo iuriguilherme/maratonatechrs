@@ -7,6 +7,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
 />
 <title>{{ name }} - {{ title }}</title>
+<!--
 <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -18,10 +19,14 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
 ></script>
+-->
+<!--
 <link
     rel="stylesheet"
     href="{{ url_for('static', filename='css/mapa.css') }}"
 />
+-->
+{{ header|safe }}
 </head>
 <body>
 <!--
@@ -34,20 +39,32 @@
 &nbsp;
 <a href="{{ url_for('dados_enchente') }}">Atualizar dados de enchente</a>
 <hr>
+<!--
 <div id="mapa" class="mapa"></div>
+-->
+{{ body_html|safe }}
 </body>
 <footer>
+<script>
+    {{ script|safe }}
+</script>
+<!--
 <script
     type="text/javascript"
     src="{{ url_for('static', filename='geojson/teste.geojson') }}"
 ></script>
+-->
+<!--
 <script
     src="{{ url_for('static', filename='js/mapa.js') }}"
 /></script>
+-->
 <!-- Eu sei que vai ficar enchendo o HTML de coisa aqui e que isto 
 deveria ser processado pelo javascript, o que pouca gente sabe é qual 
 abordagem será que faz o site travar mais ou menos -->
+<!--
 <script>
+map = {{ mapa }}
 {% for marker in markers %}
     L.marker([{{ marker['lat'] }}, {{ marker['lon'] }}]).addTo(marcadores)
     .bindPopup("{{ marker['popup'] }}")
@@ -66,5 +83,6 @@ abordagem será que faz o site travar mais ou menos -->
     .bindPopup("{{ polygon['description'] }}");
 {% endfor %}
 </script>
+-->
 </footer>
 </html>

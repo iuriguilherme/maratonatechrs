@@ -237,3 +237,4 @@ $RECYCLE.BIN/
 !.gitignore
 *.swp
 Pipfile.lock
+*.km[l,z]
