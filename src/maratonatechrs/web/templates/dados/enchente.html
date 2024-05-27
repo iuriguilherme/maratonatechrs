@@ -3,20 +3,31 @@
 API de enchentes da Inglaterra, aperte este bot&atilde;o:
 <form action="" method="post">
 {{ form1.csrf_token }}
-{{ form1.submit_field(class="btn btn-primary") }}
+{{ form1.submit1_field(class="btn btn-primary") }}
 </form>
 {% if atualizado1 %}
 Atualizado&excl;
 {% endif %}
 </p>
 <hr>
-<p>Para atualizar o mapa com os pol&iacute;gonos novos atualizados, 
-aperte este bot&atilde;o:
+<p>Para transformar os dados atualizados em pol&iacute;gonos, aperte 
+este bot&atilde;o:
 <form action="" method="post">
 {{ form2.csrf_token }}
-{{ form2.submit_field(class="btn btn-primary") }}
+{{ form2.submit2_field(class="btn btn-primary") }}
 </form>
 {% if atualizado2 %}
+Atualizado&excl;
+{% endif %}
+</p>
+<hr>
+<p>Para atualizar o mapa com os pol&iacute;gonos novos, aperte este 
+bot&atilde;o:
+<form action="" method="post">
+{{ form3.csrf_token }}
+{{ form3.submit3_field(class="btn btn-primary") }}
+</form>
+{% if atualizado3 %}
 Atualizado&excl; <a href="{{ url_for('index') }}">Ver no mapa</a>
 {% endif %}
 </p>

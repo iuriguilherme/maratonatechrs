@@ -104,9 +104,17 @@ class PolygonForm(QuartForm):
     )
     submit_field: SubmitField = SubmitField("Enviar")
 
-class UpdateForm(QuartForm):
+class Update1Form(QuartForm):
     """Formulário só com um botão"""
-    submit_field: SubmitField = SubmitField("Atualizar")
+    submit1_field: SubmitField = SubmitField("Atualizar")
+
+class Update2Form(QuartForm):
+    """Formulário só com um botão"""
+    submit2_field: SubmitField = SubmitField("Atualizar")
+
+class Update3Form(QuartForm):
+    """Formulário só com um botão"""
+    submit3_field: SubmitField = SubmitField("Atualizar")
 
 class UserLoginForm(QuartForm):
     """Formulário de login de usuário"""

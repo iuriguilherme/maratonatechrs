@@ -26,7 +26,9 @@ try:
     from .forms import (
       MarkerForm,
       PolygonForm,
-      UpdateForm,
+      Update1Form,
+      Update2Form,
+      Update3Form,
     )
 except Exception as e:
     logger.exception(e)
@@ -69,6 +71,12 @@ polygons: list[dict] = [
         'description': "Polígono de teste",
     }
 ]
+mapa_cores: dict = {
+    1: "red",
+    2: "orange",
+    3: "yellow",
+    4: "green",
+}
 
 @app.route("/")
 async def index() -> str:
@@ -176,43 +184,107 @@ async def poligono() -> str:
 async def dados_enchente() -> str:
     """Enchentes UK"""
     try:
-        arquivo_enchente: str = os.path.join(
+        api_enchentes_url: str = """http://environment.data.gov.uk/floo\
+d-monitoring/id/floods"""
+        arquivo_enchentes: str = os.path.join(
             app.instance_path,
             'uk',
             'flood.json',
         )
+        pathlib.Path(os.path.dirname(arquivo_enchentes)).mkdir(
+            parents = True, exist_ok = True)
+        caminho_enchentes: str = os.path.join(
+            os.path.dirname(arquivo_enchentes),
+            'floods',
+        )
+        pathlib.Path(caminho_enchentes).mkdir(
+            parents = True, exist_ok = True)
         atualizado1: bool = False
         atualizado2: bool = False
-        form1: UpdateForm = await UpdateForm().create_form()
-        form2: UpdateForm = await UpdateForm().create_form()
-        if await form1.validate_on_submit():
-            api_enchentes_url: str = \
-            "http://environment.data.gov.uk/flood-monitoring/id/floods"
+        atualizado3: bool = False
+        form1: Update1Form = await Update1Form().create_form()
+        form2: Update2Form = await Update2Form().create_form()
+        form3: Update3Form = await Update3Form().create_form()
+        if form1.submit1_field.data and await form1.validate():
             try:
                 async with aiohttp.ClientSession() as s:
                     async with s.get(api_enchentes_url) as r:
                         if r.status:
-                            pathlib.Path(os.path.dirname(arquivo_enchente)).mkdir(
-                                parents = True, exist_ok = True)
-                            with open(arquivo_enchente, 'w+') as f:
+                            with open(arquivo_enchentes, 'w+') as f:
                                 json.dump(await r.json(), f)
-                                atualizado1 = True
+                            atualizado1 = True
             except:
                 raise
-        if await form2.validate_on_submit():
-            api_enchentes_url: str = \
-            "http://environment.data.gov.uk/flood-monitoring/id/floods"
+        elif form2.submit2_field.data and await form2.validate():
             try:
-                async with aiohttp.ClientSession() as s:
-                    async with s.get(api_enchentes_url) as r:
-                        if r.status:
-                            with open(os.path.join(
-                                app.instance_path,
-                                'uk',
-                                'flood.json',
-                            ), 'w+') as f:
-                                json.dump(await r.json(), f)
-                                atualizado2 = True
+                with open(arquivo_enchentes, 'r+') as f:
+                    dados_enchentes: dict = json.load(f)
+                for item in dados_enchentes['items']:
+                    enchente: str = os.path.join(
+                        caminho_enchentes,
+                        item['floodAreaID'],
+                    )
+                    if not os.path.isfile(os.path.join(enchente,
+                        'polygon.json')
+                    ):
+                        pathlib.Path(enchente).mkdir(
+                            parents = True, exist_ok = True)
+                        with open(os.path.join(enchente,
+                            'metadata.json'), 'w+'
+                        ) as f:
+                            json.dump({
+                                'description': item.get('message',
+                                    item.get('description')),
+                                'color': mapa_cores[
+                                    item['severityLevel']],
+                            }, f)
+                        async with aiohttp.ClientSession() as s:
+                            async with \
+                                s.get(item['floodArea']['polygon']) as \
+                            r:
+                                if r.status:
+                                    with open(os.path.join(enchente,
+                                        'polygon.json'), 'w+'
+                                    ) as f:
+                                        json.dump(await r.json(), f)
+                atualizado2 = True
+            except:
+                raise
+        elif form3.submit3_field.data and await form3.validate():
+            try:
+                for enchente in os.listdir(caminho_enchentes):
+                    if os.path.isdir(os.path.join(caminho_enchentes,
+                        enchente)
+                    ):
+                        dados: dict = {}
+                        with open(os.path.join(caminho_enchentes,
+                            enchente, 'metadata.json'), 'r+'
+                        ) as f:
+                            dados = json.load(f)
+                        with open(os.path.join(caminho_enchentes,
+                            enchente, 'polygon.json'), 'r+'
+                        ) as f:
+                            _poligonos = json.load(f)
+                            description: str = _poligonos['features']\
+                                [0]['properties']['DESCRIP']
+                            for _c1 in _poligonos['features'][0]\
+                                ['geometry']['coordinates']\
+                            :
+                                for _c2 in _c1:
+                                    latlongs: list = []
+                                    for _c3 in _c2:
+                                        if isinstance(_c3, list):
+                                            latlongs.append([_c3[1],
+                                                _c3[0]])
+                                        else:
+                                            logger.info(f"""{enchente} \
+inconsistente""")
+                                    polygons.append({
+                                        'color': dados['color'],
+                                        'description': description,
+                                        'latlongs': latlongs,
+                                    })
+                atualizado3 = True
             except:
                 raise
         return await render_template(
@@ -220,8 +292,10 @@ async def dados_enchente() -> str:
             title = "Enchentes Inglaterra",
             form1 = form1,
             form2 = form2,
+            form3 = form3,
             atualizado1 = atualizado1,
             atualizado2 = atualizado2,
+            atualizado3 = atualizado3,
         )
     except Exception as e:
         logger.exception(e)
