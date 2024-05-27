@@ -5,6 +5,8 @@
 const mapa = 'mapa';
 const porto_alegre_lat = -30.0417169;
 const porto_alegre_lng = -51.2211564;
+const londres_lat = 51.3026
+const londres_lng = -0.739
 const tile_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tile_attribution = 'Dados de mapas &copy; contribuidora(e)s do <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' +
     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -15,6 +17,7 @@ const tile_attribution = 'Dados de mapas &copy; contribuidora(e)s do <a href="ht
 ;
 
 let map = L.map(mapa).setView([porto_alegre_lat, porto_alegre_lng], 13);
+//~ let map = L.map(mapa).setView([londres_lat, londres_lng], 13);
 
 let osm = L.tileLayer(tile_url, {
     maxZoom: 19,
@@ -46,28 +49,28 @@ let marcador_4 = L.marker(
 
 let areas = L.layerGroup().addTo(map);
 
-let area_1 = L.polygon([
-        [-30.033273, -51.240696],
-        [-30.030775, -51.238883],
-        [-30.019627, -51.216674],
-        [-30.017825, -51.197619],
-        [-30.022322, -51.195409],
-        [-30.028583, -51.19454],
-        [-30.040406, -51.194444],
-        [-30.048343, -51.196375],
-        [-30.052692, -51.204722],
-        [-30.060842, -51.219635],
-        [-30.059378, -51.230729],
-        [-30.04226, -51.236136],
-        [-30.041388, -51.241157],
-        [-30.041388, -51.241157]
-    ],
-    {
-        color: 'orange'
-    }
-)
-.addTo(areas)
-.bindPopup("Polígono de teste.");
+//~ let area_1 = L.polygon([
+        //~ [-30.033273, -51.240696],
+        //~ [-30.030775, -51.238883],
+        //~ [-30.019627, -51.216674],
+        //~ [-30.017825, -51.197619],
+        //~ [-30.022322, -51.195409],
+        //~ [-30.028583, -51.19454],
+        //~ [-30.040406, -51.194444],
+        //~ [-30.048343, -51.196375],
+        //~ [-30.052692, -51.204722],
+        //~ [-30.060842, -51.219635],
+        //~ [-30.059378, -51.230729],
+        //~ [-30.04226, -51.236136],
+        //~ [-30.041388, -51.241157],
+        //~ [-30.041388, -51.241157]
+    //~ ],
+    //~ {
+        //~ color: 'orange'
+    //~ }
+//~ )
+//~ .addTo(areas)
+//~ .bindPopup("Polígono de teste.");
 
 let geos = L.layerGroup().addTo(map);
 

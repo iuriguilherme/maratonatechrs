@@ -1,5 +1,5 @@
 <h1>{{ title }}</h1>
-<form action="" method="post">
+<form action="" method="POST" enctype="multipart/form-data">
 {{ form.csrf_token }}
 {% for field in form|selectattr('render') %}
     <div class="mb-3">
@@ -14,6 +14,6 @@
 </form>
 {% if cadastrado %}
 <hr>
-<p>Marcador cadastrado com sucesso. 
+<p>Pol&iacute;gono cadastrado com sucesso. 
 <a href="{{ url_for('index') }}">Ver no mapa</a></p>
 {% endif %}

@@ -10,6 +10,8 @@ pandas = "*"
 quart = {extras = ["dotenv"]}
 uvicorn = {extras = ["standard"], version = "*"}
 quart-wtforms = "*"
+pykml = "*"
+aiohttp = {extras = ["speedups"], version = "*"}
 
 [dev-packages]
 maratonatechrs = {editable = true, path = "."}

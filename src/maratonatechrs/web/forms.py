@@ -4,10 +4,10 @@ import logging
 logger: logging.Logger = logging.getLogger(__name__)
 
 try:
-    from quart_wtf import QuartForm
-    from quart_wtf.file import (
-      FileField,
-      FileRequired,
+    from quart_wtf import (
+        QuartForm,
+        FileField,
+        FileRequired,
     )
     from wtforms import (
         DecimalField,
@@ -94,13 +94,19 @@ class MarkerForm(QuartForm):
 
 class PolygonForm(QuartForm):
     """Formulário para enviar polígono"""
-    photo: RenderFileField = RenderFileField(
-        "Polígono em csv",
-        validators = [
-            FileRequired(),
-        ],
+    kml_field: RenderFileField = RenderFileField(
+        "Polígono em KML",
+        # ~ validators = [
+            # ~ DataRequired(),
+            # ~ FileRequired(),
+        # ~ ],
         render = True,
     )
+    submit_field: SubmitField = SubmitField("Enviar")
+
+class UpdateForm(QuartForm):
+    """Formulário só com um botão"""
+    submit_field: SubmitField = SubmitField("Atualizar")
 
 class UserLoginForm(QuartForm):
     """Formulário de login de usuário"""

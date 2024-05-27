@@ -1,0 +1,22 @@
+<h1>{{ title }}</h1>
+<p>Para obter os &uacute;ltimos dados atualizados em <i>cache</i> da
+API de enchentes da Inglaterra, aperte este bot&atilde;o:
+<form action="" method="post">
+{{ form1.csrf_token }}
+{{ form1.submit_field(class="btn btn-primary") }}
+</form>
+{% if atualizado1 %}
+Atualizado&excl;
+{% endif %}
+</p>
+<hr>
+<p>Para atualizar o mapa com os pol&iacute;gonos novos atualizados, 
+aperte este bot&atilde;o:
+<form action="" method="post">
+{{ form2.csrf_token }}
+{{ form2.submit_field(class="btn btn-primary") }}
+</form>
+{% if atualizado2 %}
+Atualizado&excl; <a href="{{ url_for('index') }}">Ver no mapa</a>
+{% endif %}
+</p>

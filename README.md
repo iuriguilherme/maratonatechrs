@@ -62,6 +62,7 @@ $ pipenv run api
 
 * https://github.com/TechPeloRS/maratona-pelo-rs
 * https://www.climate.gov/maps-data/dataset/sea-level-rise-map-viewer
+* https://www.gov.uk/check-flooding
 
 #### Fontes de dados
 
@@ -72,6 +73,7 @@ $ pipenv run api
 * https://zenodo.org/records/11243161
 * https://dadosabertos.poa.br/
 * https://public.emdat.be/
+* https://environment.data.gov.uk/flood-monitoring/doc/reference#api-summary
 
 #### Visualização de dados
 

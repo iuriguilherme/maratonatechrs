@@ -29,6 +29,8 @@
 <h2>{{ name }} v{{ version }}</h2>
 -->
 <a href="{{ url_for('marcador') }}">Cadastrar marcador</a>
+&nbsp;
+<a href="{{ url_for('poligono') }}">Cadastrar pol&iacute;gono</a>
 <hr>
 <div id="mapa" class="mapa"></div>
 </body>
@@ -40,11 +42,26 @@
 <script
     src="{{ url_for('static', filename='js/mapa.js') }}"
 /></script>
+<!-- Eu sei que vai ficar enchendo o HTML de coisa aqui e que isto 
+deveria ser processado pelo javascript, o que pouca gente sabe é qual 
+abordagem será que faz o site travar mais ou menos -->
 <script>
 {% for marker in markers %}
     L.marker([{{ marker['lat'] }}, {{ marker['lon'] }}]).addTo(marcadores)
     .bindPopup("{{ marker['popup'] }}")
     .openPopup();
+{% endfor %}
+{% for polygon in polygons %}
+    L.polygon([
+        {% for latlong in polygon['latlongs'] %}
+            {{ latlong }},
+        {% endfor %}
+    ],
+    {
+        color: "{{ polygon['color'] }}"
+    })
+    .addTo(areas)
+    .bindPopup("{{ polygon['description'] }}");
 {% endfor %}
 </script>
 </footer>

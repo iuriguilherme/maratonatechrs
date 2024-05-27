@@ -3,7 +3,7 @@
 import logging
 import os
 
-log_level: str = os.getenv('LOG_LEVEL', logging.INFO)
+log_level: str = os.getenv('LOG_LEVEL', default = logging.INFO)
 logging.basicConfig(level = log_level)
 logger: logging.Logger = logging.getLogger(__name__)
 
