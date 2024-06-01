@@ -63,6 +63,7 @@ $ pipenv run api
 * https://github.com/TechPeloRS/maratona-pelo-rs
 * https://www.climate.gov/maps-data/dataset/sea-level-rise-map-viewer
 * https://www.gov.uk/check-flooding
+* https://agenciabrasil.ebc.com.br/geral/noticia/2024-06/um-mes-de-calamidade-a-cronologia-dos-alertas-da-tragedia-no-rs
 
 #### Fontes de dados
 
